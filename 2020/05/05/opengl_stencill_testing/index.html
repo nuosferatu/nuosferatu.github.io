@@ -26,7 +26,7 @@
 <meta property="og:description" content="这个系列是我学习 OpenGL 过程中记录的笔记，本节的原教程看这里。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-05-13T11:28:32.225Z">
+<meta property="article:modified_time" content="2020-05-13T13:48:14.964Z">
 <meta property="article:author" content="諾司法拉圖">
 <meta property="article:tag" content="OpenGL">
 <meta name="twitter:card" content="summary">
@@ -218,7 +218,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
+              <span>4k</span>
             </span>
 
         </div>
@@ -247,13 +247,13 @@
 <li>渲染（其它）物体，这次根据模板缓冲的内容丢弃特定的片段（也就是说，我们根据场景中已绘制的其它物体的片段，来决定是否丢弃特定的片段）</li>
 </ul>
 <h2 id="模板测试"><a href="#模板测试" class="headerlink" title="模板测试"></a>模板测试</h2><p>启用模板测试：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_STENCIL_TEST);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_STENCIL_TEST);</span><br></pre></td></tr></tbody></table></figure>
 
 <p>和颜色缓冲、深度缓冲一样，每次迭代之前，也需要清除模板缓冲：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);</span><br></pre></td></tr></tbody></table></figure>
 
 <p>和深度缓冲的 glDepthMask 函数一样，模板缓冲也有掩码函数（与运算）：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// 每一位在写入模板缓冲时都会保持原样</span></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// 每一位在写入模板缓冲时都会变成 0（禁止写入）</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// 每一位在写入模板缓冲时都会保持原样</span></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// 每一位在写入模板缓冲时都会变成 0（禁止写入）</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>大部分情况，只需要 0x00 或 0xFF，虽然也可以自定义。</p>
 <h2 id="模板函数"><a href="#模板函数" class="headerlink" title="模板函数"></a>模板函数</h2><p>和深度测试一样，我们通过模板函数控制模板测试通过/失败的规则。</p>
@@ -266,7 +266,7 @@
 <li>掩码（与运算），对参考值、模板值都进行 AND 运算，在测试之前，默认 1</li>
 </ul>
 <p>举个例子：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glStencilFunc(GL_EQUAL, <span class="number">1</span>, <span class="number">0xFF</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glStencilFunc(GL_EQUAL, <span class="number">1</span>, <span class="number">0xFF</span>)</span><br></pre></td></tr></tbody></table></figure>
 
 <p>这会告诉 OpenGL，只要一个片段的模板值等于参考值 1，片段将会通过模板测试。</p>
 <p>也就是说，这个函数是定义模板测试通过规则。</p>
@@ -304,7 +304,7 @@
 <p><strong>具体步骤</strong></p>
 <ol>
 <li><p>首先写个片段着色器（单色边框）：</p>
-<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    FragColor = <span class="type">vec4</span>(<span class="number">0.04</span>, <span class="number">0.28</span>, <span class="number">0.26</span>, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight glsl"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> main()</span><br><span class="line">{</span><br><span class="line">    FragColor = <span class="type">vec4</span>(<span class="number">0.04</span>, <span class="number">0.28</span>, <span class="number">0.26</span>, <span class="number">1.0</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 </li>
 <li><p>启用模板测试，设置测试通过/失败的行为：</p>
 <ul>
@@ -312,21 +312,21 @@
 <li>模板测试通过，深度测试失败，什么也不做（GL_KEEP）</li>
 <li>模板测试和深度测试都通过，替换为参考值（GL_REPLACE）</li>
 </ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_STENCIL_TEST);</span><br><span class="line">glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_STENCIL_TEST);</span><br><span class="line">glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);</span><br></pre></td></tr></tbody></table></figure>
 </li>
 <li><p>模板测试通过规则：所有渲染出的片段都通过模板测试（GL_ALWAYS），模板值更新为参考值（1），允许模板缓冲的写入（允许模板缓冲写入）</p>
 <p>使用正常着色器，绘制物体：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glStencilFunc(GL_ALWAYS, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// 所有渲染出的片段都通过模板测试</span></span><br><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// 允许模板缓冲写入</span></span><br><span class="line">normalShader.use();</span><br><span class="line">DrawTwoContainers();</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glStencilFunc(GL_ALWAYS, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// 所有渲染出的片段都通过模板测试</span></span><br><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// 允许模板缓冲写入</span></span><br><span class="line">normalShader.use();</span><br><span class="line">DrawTwoContainers();</span><br></pre></td></tr></tbody></table></figure>
 </li>
 <li><p>接下来我们只使用模板缓冲，不再改动它（禁止模板缓冲的更新）</p>
 <p>放大物体，但是要防止放大的轮廓被背景物体遮挡（禁用深度测试）</p>
 <p>用单色片段着色器，再次绘制物体，模板值不等于 1 的片段才可以更新模板缓冲（GL_NOTEQUAL），也就是放大的物体超出原来物体的部分，即边框部分</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">glStencilFunc(GL_NOTEQUAL, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// 不等于 1 的片段才可以更新模板缓冲</span></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// 禁止模板缓冲的更新</span></span><br><span class="line">glDisable(GL_DEPTH_TEST); <span class="comment">// 禁用深度测试</span></span><br><span class="line">shaderSingleColor.use(); </span><br><span class="line">DrawTwoScaledUpContainers();</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">glStencilFunc(GL_NOTEQUAL, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// 不等于 1 的片段才可以更新模板缓冲</span></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// 禁止模板缓冲的更新</span></span><br><span class="line">glDisable(GL_DEPTH_TEST); <span class="comment">// 禁用深度测试</span></span><br><span class="line">shaderSingleColor.use(); </span><br><span class="line">DrawTwoScaledUpContainers();</span><br></pre></td></tr></tbody></table></figure>
 
 </li>
 </ol>
 <p><strong>完整代码（伪）</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST); <span class="comment">// 启用深度测试</span></span><br><span class="line">glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); <span class="comment">// 模板函数，模板测试失败，什么也不做，模板测试通过深度测试失败，什么也不做，模板测试和深度测试都通过，替换为参考值，参考值后面会设置</span></span><br><span class="line"></span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); <span class="comment">// 清除颜色缓冲、深度缓冲、模板缓冲</span></span><br><span class="line"></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// 先禁止模板缓冲的更新，保证我们在绘制背景物体时，不会更新模板缓冲</span></span><br><span class="line">normalShader.use(); <span class="comment">// 使用正常的片段着色器，绘制背景物体</span></span><br><span class="line">DrawFloor(); <span class="comment">// 绘制背景物体</span></span><br><span class="line"></span><br><span class="line">glStencilFunc(GL_ALWAYS, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// 设置模板函数，绘制出的物体的片段，都通过模板测试，替换为参考值为 1</span></span><br><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// 允许写入模板缓存</span></span><br><span class="line">DrawTwoContainers(); <span class="comment">// 绘制箱子，箱子的片段，都更新模板缓冲为 1</span></span><br><span class="line"></span><br><span class="line">glStencilFunc(GL_NOTEQUAL, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// 设置模板函数，这之后绘制物体，只有不等于 1 的片段，才会通过模板测试，也就是非之前绘制的物体的位置，才会通过模板测试，我们后面要画放大的物体，因此就是指物体外轮廓</span></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// 禁止模板缓冲的写入，我们这里只是使用模板缓冲，不改动它</span></span><br><span class="line">glDisable(GL_DEPTH_TEST); <span class="comment">// 禁用深度测试，防止放大的物体轮廓被背景物体遮挡</span></span><br><span class="line">shaderSingleColor.use(); <span class="comment">// 换用单色边框的片段着色器</span></span><br><span class="line">DrawTwoScaledUpContainers(); <span class="comment">// 绘制放大版箱子，通过模板测试的部分（模板值不等于 1 的部分），都会渲染出来，并且不会更新模板缓冲，因为前面禁止了</span></span><br><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// 画完了，再次允许模板缓冲的写入，一切恢复正常</span></span><br><span class="line">glEnable(GL_DEPTH_TEST); <span class="comment">// 再次开启深度测试，一切恢复正常</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST); <span class="comment">// 启用深度测试</span></span><br><span class="line">glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); <span class="comment">// 模板函数，模板测试失败，什么也不做，模板测试通过深度测试失败，什么也不做，模板测试和深度测试都通过，替换为参考值，参考值后面会设置</span></span><br><span class="line"></span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); <span class="comment">// 清除颜色缓冲、深度缓冲、模板缓冲</span></span><br><span class="line"></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// 先禁止模板缓冲的更新，保证我们在绘制背景物体时，不会更新模板缓冲</span></span><br><span class="line">normalShader.use(); <span class="comment">// 使用正常的片段着色器，绘制背景物体</span></span><br><span class="line">DrawFloor(); <span class="comment">// 绘制背景物体</span></span><br><span class="line"></span><br><span class="line">glStencilFunc(GL_ALWAYS, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// 设置模板函数，绘制出的物体的片段，都通过模板测试，替换为参考值为 1</span></span><br><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// 允许写入模板缓存</span></span><br><span class="line">DrawTwoContainers(); <span class="comment">// 绘制箱子，箱子的片段，都更新模板缓冲为 1</span></span><br><span class="line"></span><br><span class="line">glStencilFunc(GL_NOTEQUAL, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// 设置模板函数，这之后绘制物体，只有不等于 1 的片段，才会通过模板测试，也就是非之前绘制的物体的位置，才会通过模板测试，我们后面要画放大的物体，因此就是指物体外轮廓</span></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// 禁止模板缓冲的写入，我们这里只是使用模板缓冲，不改动它</span></span><br><span class="line">glDisable(GL_DEPTH_TEST); <span class="comment">// 禁用深度测试，防止放大的物体轮廓被背景物体遮挡</span></span><br><span class="line">shaderSingleColor.use(); <span class="comment">// 换用单色边框的片段着色器</span></span><br><span class="line">DrawTwoScaledUpContainers(); <span class="comment">// 绘制放大版箱子，通过模板测试的部分（模板值不等于 1 的部分），都会渲染出来，并且不会更新模板缓冲，因为前面禁止了</span></span><br><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// 画完了，再次允许模板缓冲的写入，一切恢复正常</span></span><br><span class="line">glEnable(GL_DEPTH_TEST); <span class="comment">// 再次开启深度测试，一切恢复正常</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>还可以加入后期处理滤镜（filter），如高斯模糊（Gaussian blur），可以让边框看起来更自然。</p>
 <h2 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h2><p>模板测试还可以做：</p>
@@ -334,12 +334,40 @@
 <li>比如在后视镜中绘制纹理，让它能够绘制到镜子形状中。</li>
 <li>或者使用阴影体积（shadow volume）模板缓冲技术，来渲染实时阴影。</li>
 </ul>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
     </div>
 
     
     
     
+
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/04/opengl_depth_testing/" rel="bookmark">OpenGL - 深度测试</a></div>
+    </li>
+  </ul>
+
 
       <footer class="post-footer">
           
@@ -486,7 +514,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">16k</span>
+    <span title="站点总字数">19k</span>
 </div>
 
         

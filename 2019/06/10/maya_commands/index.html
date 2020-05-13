@@ -228,7 +228,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>431</span>
+              <span>830</span>
             </span>
 
         </div>
@@ -263,11 +263,31 @@
 <p><img data-src="/images/Maya%E4%BD%BF%E7%94%A8%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4.assets/image-20191228152926096.png" alt="image-20191228152926096"></p>
 <p>对该形状做一些操作（不包含缩放、旋转、移动等变换），两个 pCube 会同时变化：</p>
 <p><img data-src="/images/Maya%E4%BD%BF%E7%94%A8%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4.assets/image-20191228153158081.png" alt="image-20191228153158081"></p>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
     </div>
 
     
     
+    
+
     
 
       <footer class="post-footer">
@@ -415,7 +435,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">16k</span>
+    <span title="站点总字数">19k</span>
 </div>
 
         

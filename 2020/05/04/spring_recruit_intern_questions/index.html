@@ -220,7 +220,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.7k</span>
+              <span>5.1k</span>
             </span>
 
         </div>
@@ -471,11 +471,31 @@
 <li>怎么算出二叉树的深度。</li>
 <li>不进行整体排序，如何找出一个数组中最大的 10 个数？（最大的 k 个数问题）用优先级队列，小顶堆。用快速排序如何解决？（好像是想问用排序数组怎么做？）</li>
 </ol>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
     </div>
 
     
     
+    
+
     
 
       <footer class="post-footer">
@@ -625,7 +645,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">16k</span>
+    <span title="站点总字数">19k</span>
 </div>
 
         

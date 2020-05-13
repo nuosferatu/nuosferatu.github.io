@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/pipeline.png">
 <meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/coordinate_systems.png">
 <meta property="article:published_time" content="2020-05-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-05-13T11:26:28.522Z">
+<meta property="article:modified_time" content="2020-05-13T13:47:58.503Z">
 <meta property="article:author" content="諾司法拉圖">
 <meta property="article:tag" content="OpenGL">
 <meta name="twitter:card" content="summary">
@@ -223,7 +223,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>2.1k</span>
             </span>
 
         </div>
@@ -250,16 +250,16 @@
 <p>深度测试在片段着色器运行之后，在屏幕空间中运行。（OpenGL 渲染管线图、坐标空间变换图见文章最后面。）</p>
 <p><strong>启用深度测试</strong></p>
 <p>深度测试默认是禁用的，启用代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST);</span><br></pre></td></tr></tbody></table></figure>
 
 <p>清除深度缓存：每个渲染迭代（rendering loop）之前，使用 GL_DEPTH_BUFFER_BIT 来清除深度缓冲，否则你还在使用上一次渲染迭代中写入的深度值：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br></pre></td></tr></tbody></table></figure>
 
 <p>深度掩码（depth mask）：在某些情况下你会需要对所有片段都执行深度测试并丢弃相应的片段，但不希望更新深度缓冲，通过以下代码禁用深度缓冲的写入：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDepthMask(GL_FALSE);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDepthMask(GL_FALSE);</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="深度测试函数"><a href="#深度测试函数" class="headerlink" title="深度测试函数"></a>深度测试函数</h2><p>深度测试函数：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDepthFunc(GL_LESS);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDepthFunc(GL_LESS);</span><br></pre></td></tr></tbody></table></figure>
 
 <p>比较运算符：</p>
 <ul>
@@ -288,7 +288,7 @@
 <p>深度值变换应用在投影矩阵中，即 <strong>观察空间</strong> -&gt; <strong>裁剪空间</strong>，这时候这个非线性方程就被应用了，这就是为什么，观察空间线性，屏幕空间非线性。详见<a href="http://www.songho.ca/opengl/gl_projectionmatrix.html" target="_blank" rel="noopener">投影矩阵</a>。</p>
 <h2 id="深度值可视化"><a href="#深度值可视化" class="headerlink" title="深度值可视化"></a>深度值可视化</h2><p>相当于显示一个通道。</p>
 <p>片段着色器代码如下：</p>
-<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FragColor = <span class="type">vec4</span>(<span class="type">vec3</span>(<span class="built_in">gl_FragCoord</span>.z), <span class="number">1.0</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight glsl"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FragColor = <span class="type">vec4</span>(<span class="type">vec3</span>(<span class="built_in">gl_FragCoord</span>.z), <span class="number">1.0</span>);</span><br></pre></td></tr></tbody></table></figure>
 
 <p>GLSL 内建变量 gl_FragCoord 可以从片段着色器中直接访问屏幕空间坐标，gl_FragCoord 分量有 x 和 y，左下角是 (0, 0)，还有 z，也就是片段的深度值，就是深度测试时，用来和深度缓存比较的那个 z。</p>
 <h2 id="深度冲突"><a href="#深度冲突" class="headerlink" title="深度冲突"></a>深度冲突</h2><p>深度冲突（z-fighting）的防止手段：</p>
@@ -308,12 +308,40 @@
 <li>裁剪空间：投影到裁剪坐标 [-1.0, 1.0]（标准化设备坐标 NDC），并判断哪些顶点将会出现在屏幕上</li>
 <li>屏幕空间：从裁剪空间变为 [0, 1]，经过视口变换（Viewport Transform）得到具体坐标，最终坐标被送到光栅器，转化为片段</li>
 </ol>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
     </div>
 
     
     
     
+
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/05/opengl_stencill_testing/" rel="bookmark">OpenGL - 模板测试</a></div>
+    </li>
+  </ul>
+
 
       <footer class="post-footer">
           
@@ -460,7 +488,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">16k</span>
+    <span title="站点总字数">19k</span>
 </div>
 
         
