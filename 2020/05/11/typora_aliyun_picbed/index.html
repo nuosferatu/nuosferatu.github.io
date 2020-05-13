@@ -12,18 +12,18 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"nuosferatu.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"nuosferatu.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="但是有一个诟病，就是没有云服务，就是一个本地编辑器。 于是出现了 坚果云 + Typora 这种经典组合。 但是图片仍然是一个问题，文档不能直接用在网络端，拷贝文档需要拖家带口带着图片文件夹一起走，或者手动上传图片到图床，链接扣下来写在 ![](http:&#x2F;&#x2F;...) 中，很麻烦，而且用第三方免费的图床如 SM.MS 又害怕哪天自己宝贵的图片被清理掉，都变成了 404 Not Found，文档变得">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Typora 自动上传图片至阿里云 OSS（图床）">
-<meta property="og:url" content="http://nuosferatu.cn/2020/05/11/typora_upload_images_to_aliyun_oss_picbed/index.html">
+<meta property="og:url" content="http://nuosferatu.cn/2020/05/11/typora_aliyun_picbed/index.html">
 <meta property="og:site_name" content="Nuosferatu&#39;s Blog">
 <meta property="og:description" content="但是有一个诟病，就是没有云服务，就是一个本地编辑器。 于是出现了 坚果云 + Typora 这种经典组合。 但是图片仍然是一个问题，文档不能直接用在网络端，拷贝文档需要拖家带口带着图片文件夹一起走，或者手动上传图片到图床，链接扣下来写在 ![](http:&#x2F;&#x2F;...) 中，很麻烦，而且用第三方免费的图床如 SM.MS 又害怕哪天自己宝贵的图片被清理掉，都变成了 404 Not Found，文档变得">
 <meta property="og:locale" content="zh_CN">
@@ -44,7 +44,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090050869.png">
 
-<link rel="canonical" href="http://nuosferatu.cn/2020/05/11/typora_upload_images_to_aliyun_oss_picbed/">
+<link rel="canonical" href="http://nuosferatu.cn/2020/05/11/typora_aliyun_picbed/">
 
 
 <script id="page-configurations">
@@ -177,7 +177,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://nuosferatu.cn/2020/05/11/typora_upload_images_to_aliyun_oss_picbed/">
+    <link itemprop="mainEntityOfPage" href="http://nuosferatu.cn/2020/05/11/typora_aliyun_picbed/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -202,13 +202,6 @@
 
               <time title="创建时间：2020-05-11 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-11T00:00:00+08:00">2020-05-11</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-12 00:00:00" itemprop="dateModified" datetime="2020-05-12T00:00:00+08:00">2020-05-12</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -220,6 +213,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -236,7 +236,7 @@
 <a id="more"></a>
 
 <p>下面是我的 Typora 阿里云 OSS 图床配置过程：</p>
-<h2 id="1-配置阿里云-OSS"><a href="#1-配置阿里云-OSS" class="headerlink" title="1. 配置阿里云 OSS"></a>1. 配置阿里云 OSS</h2><p>首先注册一个阿里云账号，有的话忽略这一句，然后租一个<strong>阿里云 OSS</strong>：</p>
+<h2 id="配置阿里云-OSS"><a href="#配置阿里云-OSS" class="headerlink" title="配置阿里云 OSS"></a>配置阿里云 OSS</h2><p>首先注册一个阿里云账号，有的话忽略这一句，然后租一个<strong>阿里云 OSS</strong>：</p>
 <p><img src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090050869.png" alt="image-20200512090050869"></p>
 <p>标准套餐，便宜的不得了，咳咳，主要是好用、安全：</p>
 <p><img src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090205648.png" alt="image-20200512090205648"></p>
@@ -246,7 +246,7 @@
 <p>打开用户中心的 <strong>访问控制</strong>：</p>
 <p><img src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512091249214.png" alt="image-20200512091249214"></p>
 <p>新建一个用户，并且授予 <strong>AliyunOSSFullAccess</strong> 权限，接下来在 Typora 的设置会用到这个用户的一些信息。</p>
-<h2 id="2-配置-Typora"><a href="#2-配置-Typora" class="headerlink" title="2. 配置 Typora"></a>2. 配置 Typora</h2><p>打开 Typora 的 <strong>偏好设置</strong> -&gt; <strong>图像</strong>，按照下图步骤，先进行到 ②：</p>
+<h2 id="配置-Typora"><a href="#配置-Typora" class="headerlink" title="配置 Typora"></a>配置 Typora</h2><p>打开 Typora 的 <strong>偏好设置</strong> -&gt; <strong>图像</strong>，按照下图步骤，先进行到 ②：</p>
 <p><img src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512091926711.png" alt="image-20200512091926711"></p>
 <p>下载完成后，打开配置文件（步骤 ③），修改 PicBed 中的内容：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"picBed"</span>: &#123;</span><br><span class="line">        <span class="attr">"uploader"</span>: <span class="string">"aliyun"</span>,</span><br><span class="line">        <span class="attr">"aliyun"</span>: &#123;</span><br><span class="line">            <span class="attr">"accessKeyId"</span>: <span class="string">"这里填刚刚创建的用户 AccessKeyID"</span>,</span><br><span class="line">            <span class="attr">"accessKeySecret"</span>: <span class="string">"这里填 AccessKeyID 的密钥"</span>,</span><br><span class="line">            <span class="attr">"bucket"</span>: <span class="string">"这里填刚刚创建的 Bucket 名称"</span>,</span><br><span class="line">            <span class="attr">"area"</span>: <span class="string">"这里填 Bucket 存储区域代号"</span>,</span><br><span class="line">            <span class="attr">"path"</span>: <span class="string">"填 Bucket 中存 Typora 图片的路径, 如 img/"</span>,</span><br><span class="line">            <span class="attr">"customUrl"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"options"</span>: <span class="string">""</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"picgoPlugins"</span>: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -264,16 +264,27 @@
     
 
       <footer class="post-footer">
+          
           <div class="post-tags">
-              <a href="/tags/markdown/" rel="tag"># markdown</a>
-              <a href="/tags/Typora/" rel="tag"># Typora</a>
-              <a href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag"># 图床</a>
+              <a href="/tags/markdown/" rel="tag"><i class="fa fa-tag"></i> markdown</a>
+              <a href="/tags/Typora/" rel="tag"><i class="fa fa-tag"></i> Typora</a>
+              <a href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag"><i class="fa fa-tag"></i> 图床</a>
           </div>
 
         
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/04/opengl_depth_testing/" rel="prev" title="OpenGL - 深度测试">
+      <i class="fa fa-chevron-left"></i> OpenGL - 深度测试
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/13/blog_build_1/" rel="next" title="小白向Hexo搭建个人博客(一)：Hexo安装及部署">
+      小白向Hexo搭建个人博客(一)：Hexo安装及部署 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
   </article>
@@ -331,7 +342,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-配置阿里云-OSS"><span class="nav-text">1. 配置阿里云 OSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置-Typora"><span class="nav-text">2. 配置 Typora</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置阿里云-OSS"><span class="nav-text">配置阿里云 OSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置-Typora"><span class="nav-text">配置 Typora</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -347,17 +358,21 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">分类</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">标签</span>
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -379,10 +394,12 @@
         
 
         
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">null </a>
+  </div>
 
 <div class="copyright">
   
-  &copy; 2018 – 
+  &copy; 2019 – 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -391,6 +408,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -440,6 +477,18 @@
   
 
   
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://nuosferatu.cn/2020/05/11/typora_aliyun_picbed/',]
+      });
+      });
+  </script>
 
 </body>
 </html>

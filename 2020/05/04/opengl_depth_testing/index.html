@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"nuosferatu.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这个系列是我学习 OpenGL 过程中记录的笔记，本节的原教程看这里。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenGL - 深度测试">
+<meta property="og:url" content="http://nuosferatu.cn/2020/05/04/opengl_depth_testing/index.html">
+<meta property="og:site_name" content="Nuosferatu&#39;s Blog">
+<meta property="og:description" content="这个系列是我学习 OpenGL 过程中记录的笔记，本节的原教程看这里。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/04/01/depth_linear_graph.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/04/01/depth_non_linear_graph.png">
+<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/pipeline.png">
+<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/coordinate_systems.png">
+<meta property="article:published_time" content="2020-05-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-13T08:37:06.561Z">
+<meta property="article:author" content="nuosferatu">
+<meta property="article:tag" content="OpenGL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://learnopengl-cn.github.io/img/04/01/depth_linear_graph.png">
+
+<link rel="canonical" href="http://nuosferatu.cn/2020/05/04/opengl_depth_testing/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>OpenGL - 深度测试 | Nuosferatu's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Nuosferatu's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://nuosferatu.cn/2020/05/04/opengl_depth_testing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="nuosferatu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nuosferatu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenGL - 深度测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-04 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-04T00:00:00+08:00">2020-05-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这个系列是我学习 OpenGL 过程中记录的笔记，本节的原教程看<a href="https://learnopengl-cn.github.io/04%20Advanced%20OpenGL/01%20Depth%20testing/" target="_blank" rel="noopener">这里</a>。</p>
+<a id="more"></a>
+
+<h2 id="深度测试"><a href="#深度测试" class="headerlink" title="深度测试"></a>深度测试</h2><p><strong>深度缓存</strong></p>
+<p>深度缓冲（depth buffer）或者 z 缓冲（z-buffer）中存储了深度值（depth value），深度缓存是由窗口系统自动创建。</p>
+<p><strong>深度测试</strong></p>
+<p>每个片段存储了颜色、深度值。</p>
+<p>深度测试（depth testing）被启用的时候，OpenGL 会将一个片段的的深度值与深度缓冲的内容进行对比，这就是深度测试，具体地：</p>
+<ul>
+<li>通过，深度缓冲将会更新为新的深度值 z</li>
+<li>没通过，片段将会被丢弃</li>
+</ul>
+<p>深度测试在片段着色器运行之后，在屏幕空间中运行。（OpenGL 渲染管线图、坐标空间变换图见文章最后面。）</p>
+<p><strong>启用深度测试</strong></p>
+<p>深度测试默认是禁用的，启用代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST);</span><br></pre></td></tr></table></figure>
+
+<p>清除深度缓存：每个渲染迭代（rendering loop）之前，使用 GL_DEPTH_BUFFER_BIT 来清除深度缓冲，否则你还在使用上一次渲染迭代中写入的深度值：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br></pre></td></tr></table></figure>
+
+<p>深度掩码（depth mask）：在某些情况下你会需要对所有片段都执行深度测试并丢弃相应的片段，但不希望更新深度缓冲，通过以下代码禁用深度缓冲的写入：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDepthMask(GL_FALSE);</span><br></pre></td></tr></table></figure>
+
+<h2 id="深度测试函数"><a href="#深度测试函数" class="headerlink" title="深度测试函数"></a>深度测试函数</h2><p>深度测试函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDepthFunc(GL_LESS);</span><br></pre></td></tr></table></figure>
+
+<p>比较运算符：</p>
+<ul>
+<li>GL_ALWAYS，永远通过（这和没开启深度测试的效果一样，后来的顶点片段都会覆盖之前的片段）</li>
+<li>GL_NEVER，永远不通过</li>
+<li>GL_LESS（默认值），深度小于深度缓存，则深度测试通过，更新深度缓存</li>
+<li>GL_EQUAL，等于通过</li>
+<li>GL_LEQUAL，小于等于通过</li>
+<li>GL_GREATER，大于通过</li>
+<li>GL_GEQUAL，大于等于通过</li>
+<li>GL_NOTEQUAL，不等于通过</li>
+</ul>
+<h2 id="深度值精度"><a href="#深度值精度" class="headerlink" title="深度值精度"></a>深度值精度</h2><p><strong>深度值</strong></p>
+<p>深度值并不是指平截头体中具体的空间深度，而是一种具有一定区分度（通常是非线性的）的深度表示。</p>
+<p>z 在观察空间中，线性，变换后，在屏幕空间中，范围 0.0 至 1.0</p>
+<p><strong>深度值变换方式</strong></p>
+<ul>
+<li><p>线性（基本不用）<br>$$<br>F_{depth} = \frac{z - near}{far - near}<br>$$<br><img src="https://learnopengl-cn.github.io/img/04/01/depth_linear_graph.png" alt="线性变换"></p>
+<p>其中 near $\le$ z $\le$ far，超出范围都丢弃。越靠近 near，越靠近 0；越靠近 far，越靠近 1。</p>
+</li>
+<li><p>非线性<br>$$<br>F_{depth} = \frac{1/z - 1/near}{1/far - 1/near}<br>$$<br><img src="https://learnopengl-cn.github.io/img/04/01/depth_non_linear_graph.png" alt="非线性变换"></p>
+<p>0.5 并不代表平截头体的中间，而是一个很靠近 near 的位置了，因此近距离具有较高的深度值精度，较远处精度较低。</p>
+<p>深度值变换应用在投影矩阵中，即 <strong>观察空间</strong> -&gt; <strong>裁剪空间</strong>，这时候这个非线性方程就被应用了，这就是为什么，观察空间线性，屏幕空间非线性。详见<a href="http://www.songho.ca/opengl/gl_projectionmatrix.html" target="_blank" rel="noopener">投影矩阵</a>。</p>
+</li>
+</ul>
+<h2 id="深度值可视化"><a href="#深度值可视化" class="headerlink" title="深度值可视化"></a>深度值可视化</h2><p>相当于显示一个通道。</p>
+<p>片段着色器代码如下：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FragColor = <span class="type">vec4</span>(<span class="type">vec3</span>(<span class="built_in">gl_FragCoord</span>.z), <span class="number">1.0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>GLSL 内建变量 gl_FragCoord 可以从片段着色器中直接访问屏幕空间坐标，gl_FragCoord 分量有 x 和 y，左下角是 (0, 0)，还有 z，也就是片段的深度值，就是深度测试时，用来和深度缓存比较的那个 z。</p>
+<h2 id="深度冲突（z-fighting）"><a href="#深度冲突（z-fighting）" class="headerlink" title="深度冲突（z-fighting）"></a>深度冲突（z-fighting）</h2><p>防止手段：</p>
+<ul>
+<li>不要把多个物体摆得太靠近，可以做一点微小的偏移</li>
+<li>将近平面设置远一些，但是太远将会导致近处的物体被裁剪掉</li>
+<li>将深度缓冲的精度提高到 32 位，牺牲一些性能。（深度精度是 16、24、32 位 float，大部分系统中，默认深度精度为 24 位）</li>
+</ul>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p>OpenGL 渲染管线图：</p>
+<p><img src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/pipeline.png" alt="OpenGL 渲染管线"></p>
+<p>坐标空间变换图：</p>
+<p><img src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/coordinate_systems.png" alt="坐标空间图"></p>
+<ol>
+<li>局部空间：单个物体的起始坐标，相对于局部坐标系原点</li>
+<li>世界空间：所有物体摆放在一起，相对于世界坐标系原点</li>
+<li>观察空间：每个坐标都是从摄像机或者说观察者的角度进行观察的</li>
+<li>裁剪空间：投影到裁剪坐标 [-1.0, 1.0]（标准化设备坐标 NDC），并判断哪些顶点将会出现在屏幕上</li>
+<li>屏幕空间：从裁剪空间变为 [0, 1]，经过视口变换（Viewport Transform）得到具体坐标，最终坐标被送到光栅器，转化为片段</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/OpenGL/" rel="tag"><i class="fa fa-tag"></i> OpenGL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/06/04/blog_build_2/" rel="prev" title="小白建站2：博客文章格式">
+      <i class="fa fa-chevron-left"></i> 小白建站2：博客文章格式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/11/typora_aliyun_picbed/" rel="next" title="Typora 自动上传图片至阿里云 OSS（图床）">
+      Typora 自动上传图片至阿里云 OSS（图床） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#深度测试"><span class="nav-text">深度测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度测试函数"><span class="nav-text">深度测试函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度值精度"><span class="nav-text">深度值精度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度值可视化"><span class="nav-text">深度值可视化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度冲突（z-fighting）"><span class="nav-text">深度冲突（z-fighting）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-text">附录</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="nuosferatu"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">nuosferatu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">null </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">nuosferatu</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://nuosferatu.cn/2020/05/04/opengl_depth_testing/',]
+      });
+      });
+  </script>
+
+</body>
+</html>
