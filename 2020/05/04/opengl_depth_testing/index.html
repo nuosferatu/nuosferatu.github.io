@@ -18,19 +18,19 @@
     var CONFIG = {"hostname":"nuosferatu.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="这个系列是我学习 OpenGL 过程中记录的笔记，本节的原教程看这里。">
+  <meta name="description" content="这个系列是我学习 OpenGL 过程中记录的笔记，本节主要是片段着色器后的深度测试，教程原文看这里。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenGL - 深度测试">
 <meta property="og:url" content="http://nuosferatu.cn/2020/05/04/opengl_depth_testing/index.html">
 <meta property="og:site_name" content="Nuosferatu&#39;s Blog">
-<meta property="og:description" content="这个系列是我学习 OpenGL 过程中记录的笔记，本节的原教程看这里。">
+<meta property="og:description" content="这个系列是我学习 OpenGL 过程中记录的笔记，本节主要是片段着色器后的深度测试，教程原文看这里。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/depth_linear_graph.png">
 <meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/depth_non_linear_graph.png">
 <meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/pipeline.png">
 <meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/coordinate_systems.png">
 <meta property="article:published_time" content="2020-05-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-05-13T13:47:58.503Z">
+<meta property="article:modified_time" content="2020-05-18T12:40:12.892Z">
 <meta property="article:author" content="諾司法拉圖">
 <meta property="article:tag" content="OpenGL">
 <meta name="twitter:card" content="summary">
@@ -123,17 +123,17 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-server fa-fw"></i>归档<span class="badge">9</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-server fa-fw"></i>归档<span class="badge">8</span></a>
 
   </li>
         <li class="menu-item menu-item-movies">
@@ -235,10 +235,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>这个系列是我学习 OpenGL 过程中记录的笔记，本节的原教程看<a href="https://learnopengl-cn.github.io/04%20Advanced%20OpenGL/01%20Depth%20testing/" target="_blank" rel="noopener">这里</a>。</p>
+        <p>这个系列是我学习 OpenGL 过程中记录的笔记，本节主要是片段着色器后的深度测试，教程原文看<a href="https://learnopengl-cn.github.io/04%20Advanced%20OpenGL/01%20Depth%20testing/" target="_blank" rel="noopener">这里</a>。</p>
 <a id="more"></a>
 
-<h2 id="深度测试"><a href="#深度测试" class="headerlink" title="深度测试"></a>深度测试</h2><p><strong>深度缓存</strong></p>
+<h1 id="深度测试"><a href="#深度测试" class="headerlink" title="深度测试"></a>深度测试</h1><p><strong>深度缓存</strong></p>
 <p>深度缓冲（depth buffer）或者 z 缓冲（z-buffer）中存储了深度值（depth value），深度缓存是由窗口系统自动创建。</p>
 <p><strong>深度测试</strong></p>
 <p>每个片段存储了颜色、深度值。</p>
@@ -252,31 +252,29 @@
 <p>深度测试默认是禁用的，启用代码：</p>
 <figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST);</span><br></pre></td></tr></tbody></table></figure>
 
-<p>清除深度缓存：每个渲染迭代（rendering loop）之前，使用 GL_DEPTH_BUFFER_BIT 来清除深度缓冲，否则你还在使用上一次渲染迭代中写入的深度值：</p>
+<p>清除深度缓存：每个渲染迭代（rendering loop）之前，使用 <code>GL_DEPTH_BUFFER_BIT</code> 来清除深度缓冲，否则你还在使用上一次渲染迭代中写入的深度值：</p>
 <figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br></pre></td></tr></tbody></table></figure>
 
 <p>深度掩码（depth mask）：在某些情况下你会需要对所有片段都执行深度测试并丢弃相应的片段，但不希望更新深度缓冲，通过以下代码禁用深度缓冲的写入：</p>
 <figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDepthMask(GL_FALSE);</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="深度测试函数"><a href="#深度测试函数" class="headerlink" title="深度测试函数"></a>深度测试函数</h2><p>深度测试函数：</p>
+<h1 id="深度测试函数"><a href="#深度测试函数" class="headerlink" title="深度测试函数"></a>深度测试函数</h1><p>深度测试函数：</p>
 <figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDepthFunc(GL_LESS);</span><br></pre></td></tr></tbody></table></figure>
 
 <p>比较运算符：</p>
 <ul>
-<li>GL_ALWAYS，永远通过（这和没开启深度测试的效果一样，后来的顶点片段都会覆盖之前的片段）</li>
-<li>GL_NEVER，永远不通过</li>
-<li>GL_LESS（默认值），深度小于深度缓存，则深度测试通过，更新深度缓存</li>
-<li>GL_EQUAL，等于通过</li>
-<li>GL_LEQUAL，小于等于通过</li>
-<li>GL_GREATER，大于通过</li>
-<li>GL_GEQUAL，大于等于通过</li>
-<li>GL_NOTEQUAL，不等于通过</li>
+<li><code>GL_ALWAYS</code>，永远通过（这和没开启深度测试的效果一样，后来的顶点片段都会覆盖之前的片段）</li>
+<li><code>GL_NEVER</code>，永远不通过</li>
+<li><code>GL_LESS</code>（默认值），深度小于深度缓存，则深度测试通过，更新深度缓存</li>
+<li><code>GL_EQUAL</code>，等于通过</li>
+<li><code>GL_LEQUAL</code>，小于等于通过</li>
+<li><code>GL_GREATER</code>，大于通过</li>
+<li><code>GL_GEQUAL</code>，大于等于通过</li>
+<li><code>GL_NOTEQUAL</code>，不等于通过</li>
 </ul>
-<h2 id="深度值精度"><a href="#深度值精度" class="headerlink" title="深度值精度"></a>深度值精度</h2><p><strong>深度值</strong></p>
-<p>深度值并不是指平截头体中具体的空间深度，而是一种具有一定区分度（通常是非线性的）的深度表示。</p>
+<h1 id="深度值精度"><a href="#深度值精度" class="headerlink" title="深度值精度"></a>深度值精度</h1><h2 id="深度值"><a href="#深度值" class="headerlink" title="深度值"></a>深度值</h2><p>深度值并不是指平截头体中具体的空间深度，而是一种具有一定区分度（通常是非线性的）的深度表示。</p>
 <p>z 在观察空间中，线性，变换后，在屏幕空间中，范围 0.0 至 1.0</p>
-<p><strong>深度值变换方式</strong></p>
-<p>a 线性（基本不用）</p>
+<h2 id="深度值变换方式"><a href="#深度值变换方式" class="headerlink" title="深度值变换方式"></a>深度值变换方式</h2><p>a 线性（基本不用）</p>
 <p>$$<br>F_{depth} = \frac{z - near}{far - near}<br>$$</p>
 <p>关系如下图所示：</p>
 <p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/depth_linear_graph.png" alt="线性变换"></p>
@@ -285,19 +283,19 @@
 <p>$$<br>F_{depth} = \frac{1/z - 1/near}{1/far - 1/near}<br>$$</p>
 <p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/depth_non_linear_graph.png" alt="非线性变换"></p>
 <p>0.5 并不代表平截头体的中间，而是一个很靠近 near 的位置了，因此近距离具有较高的深度值精度，较远处精度较低。</p>
-<p>深度值变换应用在投影矩阵中，即 <strong>观察空间</strong> -&gt; <strong>裁剪空间</strong>，这时候这个非线性方程就被应用了，这就是为什么，观察空间线性，屏幕空间非线性。详见<a href="http://www.songho.ca/opengl/gl_projectionmatrix.html" target="_blank" rel="noopener">投影矩阵</a>。</p>
-<h2 id="深度值可视化"><a href="#深度值可视化" class="headerlink" title="深度值可视化"></a>深度值可视化</h2><p>相当于显示一个通道。</p>
+<p>深度值变换应用在投影矩阵中，即<strong>观察空间</strong> -&gt; <strong>裁剪空间</strong>，这时候这个非线性方程就被应用了，这就是为什么，观察空间线性，屏幕空间非线性。详见<a href="http://www.songho.ca/opengl/gl_projectionmatrix.html" target="_blank" rel="noopener">投影矩阵</a>。</p>
+<h1 id="深度值可视化"><a href="#深度值可视化" class="headerlink" title="深度值可视化"></a>深度值可视化</h1><p>相当于显示一个通道。</p>
 <p>片段着色器代码如下：</p>
 <figure class="highlight glsl"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FragColor = <span class="type">vec4</span>(<span class="type">vec3</span>(<span class="built_in">gl_FragCoord</span>.z), <span class="number">1.0</span>);</span><br></pre></td></tr></tbody></table></figure>
 
-<p>GLSL 内建变量 gl_FragCoord 可以从片段着色器中直接访问屏幕空间坐标，gl_FragCoord 分量有 x 和 y，左下角是 (0, 0)，还有 z，也就是片段的深度值，就是深度测试时，用来和深度缓存比较的那个 z。</p>
-<h2 id="深度冲突"><a href="#深度冲突" class="headerlink" title="深度冲突"></a>深度冲突</h2><p>深度冲突（z-fighting）的防止手段：</p>
+<p>GLSL 内建变量 <code>gl_FragCoord</code> 可以从片段着色器中直接访问屏幕空间坐标，<code>gl_FragCoord</code> 分量有 x 和 y，左下角是 (0, 0)，还有 z，也就是片段的深度值，就是深度测试时，用来和深度缓存比较的那个 z。</p>
+<h1 id="深度冲突"><a href="#深度冲突" class="headerlink" title="深度冲突"></a>深度冲突</h1><p>深度冲突（z-fighting）的防止手段：</p>
 <ul>
 <li>不要把多个物体摆得太靠近，可以做一点微小的偏移</li>
 <li>将近平面设置远一些，但是太远将会导致近处的物体被裁剪掉</li>
 <li>将深度缓冲的精度提高到 32 位，牺牲一些性能。（深度精度是 16、24、32 位 float，大部分系统中，默认深度精度为 24 位）</li>
 </ul>
-<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p>OpenGL 渲染管线图：</p>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><p>OpenGL 渲染管线图：</p>
 <p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/pipeline.png" alt="OpenGL 渲染管线"></p>
 <p>坐标空间变换图：</p>
 <p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/coordinate_systems.png" alt="坐标空间图"></p>
@@ -420,7 +418,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#深度测试"><span class="nav-text">深度测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度测试函数"><span class="nav-text">深度测试函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度值精度"><span class="nav-text">深度值精度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度值可视化"><span class="nav-text">深度值可视化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度冲突"><span class="nav-text">深度冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-text">附录</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#深度测试"><span class="nav-text">深度测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深度测试函数"><span class="nav-text">深度测试函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深度值精度"><span class="nav-text">深度值精度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#深度值"><span class="nav-text">深度值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度值变换方式"><span class="nav-text">深度值变换方式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深度值可视化"><span class="nav-text">深度值可视化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深度冲突"><span class="nav-text">深度冲突</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#附录"><span class="nav-text">附录</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -436,20 +434,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
