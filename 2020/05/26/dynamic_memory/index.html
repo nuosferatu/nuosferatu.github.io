@@ -18,32 +18,23 @@
     var CONFIG = {"hostname":"nuosferatu.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="众所周知，Typora 是宇宙最好的 markdown 所见即所得编辑器，但是有一个诟病，就是没有云服务，就是一个本地编辑器。这篇文章讲了如何利用 Typora 的上传图片的功能，优雅地使用 Typora。">
+  <meta name="description" content="new 分配内存，delete 释放 new 分配的内存。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Typora 自动上传图片至阿里云 OSS（图床）">
-<meta property="og:url" content="http://nuosferatu.cn/2020/05/11/typora_aliyun_picbed/index.html">
+<meta property="og:title" content="动态内存">
+<meta property="og:url" content="http://nuosferatu.cn/2020/05/26/dynamic_memory/index.html">
 <meta property="og:site_name" content="Nuosferatu&#39;s Blog">
-<meta property="og:description" content="众所周知，Typora 是宇宙最好的 markdown 所见即所得编辑器，但是有一个诟病，就是没有云服务，就是一个本地编辑器。这篇文章讲了如何利用 Typora 的上传图片的功能，优雅地使用 Typora。">
+<meta property="og:description" content="new 分配内存，delete 释放 new 分配的内存。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090050869.png">
-<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090205648.png">
-<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090637139.png">
-<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090727768.png">
-<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512091249214.png">
-<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512091926711.png">
-<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512093913990.png">
-<meta property="og:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512093955625.png">
-<meta property="article:published_time" content="2020-05-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-05-18T12:48:16.125Z">
+<meta property="article:published_time" content="2020-05-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-26T13:30:58.942Z">
 <meta property="article:author" content="諾司法拉圖">
-<meta property="article:tag" content="博客">
-<meta property="article:tag" content="阿里云">
-<meta property="article:tag" content="Typora">
-<meta property="article:tag" content="图床">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="new">
+<meta property="article:tag" content="delete">
+<meta property="article:tag" content="动态内存">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090050869.png">
 
-<link rel="canonical" href="http://nuosferatu.cn/2020/05/11/typora_aliyun_picbed/">
+<link rel="canonical" href="http://nuosferatu.cn/2020/05/26/dynamic_memory/">
 
 
 <script id="page-configurations">
@@ -56,7 +47,7 @@
   };
 </script>
 
-  <title>Typora 自动上传图片至阿里云 OSS（图床） | Nuosferatu's Blog</title>
+  <title>动态内存 | Nuosferatu's Blog</title>
   
 
 
@@ -189,7 +180,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://nuosferatu.cn/2020/05/11/typora_aliyun_picbed/">
+    <link itemprop="mainEntityOfPage" href="http://nuosferatu.cn/2020/05/26/dynamic_memory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -202,7 +193,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Typora 自动上传图片至阿里云 OSS（图床）
+          动态内存
         </h1>
 
         <div class="post-meta">
@@ -212,7 +203,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-05-11 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-11T00:00:00+08:00">2020-05-11</time>
+              <time title="创建时间：2020-05-26 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-26T00:00:00+08:00">2020-05-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -220,7 +211,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">博客</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
@@ -230,7 +221,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>1.9k</span>
             </span>
 
         </div>
@@ -242,32 +233,59 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>众所周知，Typora 是宇宙最好的 markdown 所见即所得编辑器，但是有一个诟病，就是没有云服务，就是一个本地编辑器。这篇文章讲了如何利用 Typora 的上传图片的功能，优雅地使用 Typora。</p>
+        <p>new 分配内存，delete 释放 new 分配的内存。</p>
 <a id="more"></a>
 
-<p>于是出现了 <strong>坚果云 + Typora</strong> 这种经典组合。</p>
-<p>但是图片仍然是一个问题，文档不能直接用在网络端，拷贝文档需要拖家带口带着图片文件夹一起走，或者手动上传图片到图床，链接扣下来写在 <code>![](http://...)</code> 中，很麻烦，而且用第三方免费的图床如 SM.MS 又害怕哪天自己宝贵的图片被清理掉，都变成了 <code>404 Not Found</code>，文档变得只可意会不可言传。正巧碰上 Typora 推出了上传图片的服务，虽然它还是一个本地编辑器，但是可以上传图片到别人家的服务器了，不如租一个阿里云 OSS（对象存储服务），自己搭建一个图床。</p>
-<p>下面是我的 Typora 阿里云 OSS 图床配置过程：</p>
-<h1 id="配置阿里云-OSS"><a href="#配置阿里云-OSS" class="headerlink" title="配置阿里云 OSS"></a>配置阿里云 OSS</h1><p>首先注册一个阿里云账号，有的话忽略这一句，然后租一个<strong>阿里云 OSS</strong>：</p>
-<p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090050869.png" alt="image-20200512090050869"></p>
-<p>标准套餐，便宜的不得了，咳咳，主要是好用、安全：</p>
-<p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090205648.png" alt="image-20200512090205648"></p>
-<p>打开 <strong>OSS 管理控制台</strong> -&gt; <strong>Bucket 列表</strong>，新建一个 Bucket，需要注意的是，读写权限要设置为<strong>公共读</strong>，否则图片上传上去，却不能在文档上加载。</p>
-<p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090637139.png" alt="image-20200512090637139"></p>
-<p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512090727768.png" alt="image-20200512090727768"></p>
-<p>打开用户中心的<strong>访问控制</strong>：</p>
-<p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512091249214.png" alt="image-20200512091249214"></p>
-<p>新建一个用户，并且授予 <strong>AliyunOSSFullAccess</strong> 权限，接下来在 Typora 的设置会用到这个用户的一些信息。</p>
-<h1 id="配置-Typora"><a href="#配置-Typora" class="headerlink" title="配置 Typora"></a>配置 Typora</h1><p>打开 Typora 的 <strong>偏好设置</strong> -&gt; <strong>图像</strong>，按照下图步骤，先进行到 ②：</p>
-<p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512091926711.png" alt="image-20200512091926711"></p>
-<p>下载完成后，打开配置文件（步骤 ③），修改 PicBed 中的内容：</p>
-<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="attr">"picBed"</span>: {</span><br><span class="line">        <span class="attr">"uploader"</span>: <span class="string">"aliyun"</span>,</span><br><span class="line">        <span class="attr">"aliyun"</span>: {</span><br><span class="line">            <span class="attr">"accessKeyId"</span>: <span class="string">"这里填刚刚创建的用户 AccessKeyID"</span>,</span><br><span class="line">            <span class="attr">"accessKeySecret"</span>: <span class="string">"这里填 AccessKeyID 的密钥"</span>,</span><br><span class="line">            <span class="attr">"bucket"</span>: <span class="string">"这里填刚刚创建的 Bucket 名称"</span>,</span><br><span class="line">            <span class="attr">"area"</span>: <span class="string">"这里填 Bucket 存储区域代号"</span>,</span><br><span class="line">            <span class="attr">"path"</span>: <span class="string">"填 Bucket 中存 Typora 图片的路径, 如 img/"</span>,</span><br><span class="line">            <span class="attr">"customUrl"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"options"</span>: <span class="string">""</span></span><br><span class="line">        }</span><br><span class="line">    },</span><br><span class="line">    <span class="attr">"picgoPlugins"</span>: {}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="new"><a href="#new" class="headerlink" title="new"></a>new</h1><p><strong>初始化</strong></p>
+<p>使用 new 在堆（heap）中分配内存是无名的，会返回一个指向该对象的指针，所有要用一个指针接着。</p>
+<p>初始化方式：</p>
+<ul>
+<li>默认初始化，什么也不写</li>
+<li>直接初始化，传统的圆括号，或者列表初始化（C++11）</li>
+<li>值初始化，后跟一对空括号</li>
+</ul>
+<blockquote>
+<p>值初始化和默认初始化的区别主要在内置变量，值初始化是后跟一对空括号，int 会初始化为 0，默认初始化什么也不写，int 未定义；对于类类型来说，都是调用默认构造函数，没区别。</p>
+</blockquote>
+<p><strong>auto</strong></p>
+<p>直接初始化中，圆括号内是初始化器，当只有单一初始化器时，可以使用 auto 推断类型（后面会讲到动态数组不能用 auto，因为只有单一初始化器才可以使用 auto 推断类型，而动态数组不允许使用初始化器），如：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p1 = <span class="keyword">new</span> <span class="keyword">auto</span>(obj);</span><br></pre></td></tr></tbody></table></figure>
 
-<p>保存配置文件，验证配置是否成功（步骤 ④）。</p>
-<p>接下来，插入图片就会自动上传到阿里云 OSS 指定路径（img/）中（实际上并没有，插入图片后，还是需要手动点击图片上的 “上传图片” 选项，有点不方便，明明选择了自动，不过给用户一个机会决定是否上传，也算合理吧），markdown 文档中，路径也会自动变成阿里云 OSS 中图片的路径，如下：</p>
-<p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512093913990.png" alt="image-20200512093913990"></p>
-<p><img data-src="https://aliyun-oss-pic-bucket.oss-cn-beijing.aliyuncs.com/img/image-20200512093955625.png" alt="image-20200512093955625"></p>
-<p>完结撒花。</p>
+<p><strong>const</strong></p>
+<p>用 new 分配一个 const 对象（当然是指底层 const）：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *pi = <span class="keyword">new</span> <span class="keyword">const</span> <span class="keyword">int</span>(<span class="number">1024</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">string</span> *ps = <span class="keyword">new</span> <span class="keyword">const</span> <span class="built_in">string</span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>内存耗尽</strong></p>
+<p>new 分配失败，抛出 bad_alloc 异常，如果将 nothrow 传入<strong>定位 new</strong>，则返回一个空指针。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> (nothrow) <span class="keyword">int</span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h1><p>delete 销毁 new 分配的对象，释放内存。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1024</span>);</span><br><span class="line"><span class="keyword">delete</span> p;</span><br><span class="line">p = <span class="literal">nullptr</span>; <span class="comment">// 避免空悬指针</span></span><br><span class="line"><span class="comment">// 但是作用有限，如果还有别的指针指向它</span></span><br><span class="line"><span class="comment">// 毕竟不是智能指针</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="动态数组"><a href="#动态数组" class="headerlink" title="动态数组"></a>动态数组</h1><p>分配一个动态数组，实际是返回第一个元素的指针，并不真的是数组：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br></pre></td></tr></tbody></table></figure>
+
+<p>也可以 typedef 先定义好动态数组的形式：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">42</span>]; <span class="comment">// arrT 相当于 int[42]</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> arrT;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>初始化，默认是默认初始化，可以加空括号执行值初始化，但是不能给初始化器，所以自然也不能用 auto：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]; <span class="comment">// 默认初始化，10 个未定义</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>](); <span class="comment">// 值初始化，10 个 0</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>也可以用初始值列表 <code>{ }</code> 执行初始化，不足的位数进行值初始化，多余了位数，new 失败，抛出 bad_array_new_length 异常。</p>
+<p>有趣的是，分配一个长度为 0 的动态数组合法（而静态数组不允许长度为 0），可以执行指针比较、加减操作，但是不能解引用。</p>
+<p>释放：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span>[] p; <span class="comment">// 如果忘记了方括号，行为未定义，编译器不报错</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="new-与智能指针"><a href="#new-与智能指针" class="headerlink" title="new 与智能指针"></a>new 与智能指针</h1><p>使用 new 来初始化智能指针：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>智能指针构造函数是 explicit 的，不允许隐式转换，必须使用直接初始化，即使是返回值也得直接初始化。</p>
+<h1 id="动态数组与智能指针"><a href="#动态数组与智能指针" class="headerlink" title="动态数组与智能指针"></a>动态数组与智能指针</h1><p>动态数组与智能指针：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unique_ptr&lt;int[]&gt; up(new int[10]);</span><br><span class="line">up.<span class="built_in">release</span>(); <span class="comment">// 自动调用 delete[] 销毁其指针</span></span><br><span class="line">up[<span class="number">1</span>] = <span class="number">2</span>; <span class="comment">// 可以用 []，不能用点和箭头，毕竟是数组</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>shared_ptr 使用 delete 销毁对象，因此不能直接支持管理动态数组，需要自定义一个删除器 delete[]，否则未定义，也不能用 <code>[ ]</code>，只能用 get 函数获取一个内置指针，通过偏移来访问数组。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">sp</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>], [](<span class="keyword">int</span> *p) { <span class="keyword">delete</span>[] p; })</span></span>;</span><br><span class="line">sp.reset(); <span class="comment">// 使用 deletep[] 释放数组</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i != <span class="number">10</span>; ++i)</span><br><span class="line">    *(sp.<span class="built_in">get</span>() + i) = i; <span class="comment">// 不能用 []，只能用内置指针偏移访问数组</span></span><br></pre></td></tr></tbody></table></figure>
+
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -294,31 +312,14 @@
     
 
     
-      
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/06/03/blog_build_1/" rel="bookmark">小白建站 1：Hexo 安装及部署</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/06/04/blog_build_2/" rel="bookmark">小白建站 2：博客文章格式</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/06/05/mathjax_enable/" rel="bookmark">Markdown 文档在博客中的公式显示</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/06/03/test_markdown/" rel="bookmark">Markdown(含Hexo扩展)语法测试</a></div>
-    </li>
-  </ul>
-
 
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag"><i class="fa fa-tag"></i> 博客</a>
-              <a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" rel="tag"><i class="fa fa-tag"></i> 阿里云</a>
-              <a href="/tags/Typora/" rel="tag"><i class="fa fa-tag"></i> Typora</a>
-              <a href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag"><i class="fa fa-tag"></i> 图床</a>
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+              <a href="/tags/new/" rel="tag"><i class="fa fa-tag"></i> new</a>
+              <a href="/tags/delete/" rel="tag"><i class="fa fa-tag"></i> delete</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/" rel="tag"><i class="fa fa-tag"></i> 动态内存</a>
           </div>
 
         
@@ -327,13 +328,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/05/05/opengl_stencill_testing/" rel="prev" title="OpenGL - 模板测试">
-      <i class="fa fa-chevron-left"></i> OpenGL - 模板测试
+    <a href="/2020/05/26/smart_pointer/" rel="prev" title="智能指针">
+      <i class="fa fa-chevron-left"></i> 智能指针
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/05/18/framebuffer/" rel="next" title="OpenGL - 帧缓冲">
-      OpenGL - 帧缓冲 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -392,7 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#配置阿里云-OSS"><span class="nav-text">配置阿里云 OSS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置-Typora"><span class="nav-text">配置 Typora</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#new"><span class="nav-text">new</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#delete"><span class="nav-text">delete</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态数组"><span class="nav-text">动态数组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#new-与智能指针"><span class="nav-text">new 与智能指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态数组与智能指针"><span class="nav-text">动态数组与智能指针</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -547,7 +545,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://nuosferatu.cn/2020/05/11/typora_aliyun_picbed/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://nuosferatu.cn/2020/05/26/dynamic_memory/',]
       });
       });
   </script>
