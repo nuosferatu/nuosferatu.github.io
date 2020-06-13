@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=MontserratRegular:300,300italic,400,400italic,700,700italic|Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"nuosferatu.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="LeetCode 1263 题 推箱子。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="题解：推箱子（LeetCode 1263）">
+<meta property="og:url" content="http://nuosferatu.cn/2020/04/20/%E9%A2%98%E8%A7%A3%EF%BC%9A%E6%8E%A8%E7%AE%B1%E5%AD%90/index.html">
+<meta property="og:site_name" content="Nuosferatu&#39;s Blog">
+<meta property="og:description" content="LeetCode 1263 题 推箱子。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-13T03:24:38.395Z">
+<meta property="article:author" content="諾司法拉圖">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="推箱子">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://nuosferatu.cn/2020/04/20/%E9%A2%98%E8%A7%A3%EF%BC%9A%E6%8E%A8%E7%AE%B1%E5%AD%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>题解：推箱子（LeetCode 1263） | Nuosferatu's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Nuosferatu's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">22</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-server fa-fw"></i>归档<span class="badge">25</span></a>
+
+  </li>
+        <li class="menu-item menu-item-movies">
+
+    <a href="/movies/" rel="section"><i class="fa fa-film fa-fw"></i>电影</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-book fa-fw"></i>图书</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/nuosferatu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://nuosferatu.cn/2020/04/20/%E9%A2%98%E8%A7%A3%EF%BC%9A%E6%8E%A8%E7%AE%B1%E5%AD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="諾司法拉圖">
+      <meta itemprop="description" content="一只想成为设计狮的程序猿。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nuosferatu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          题解：推箱子（LeetCode 1263）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-20 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-20T00:00:00+08:00">2020-04-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.6k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note default">
+            <p>LeetCode 1263 题 <a href="https://leetcode-cn.com/problems/minimum-moves-to-move-a-box-to-their-target-location/" target="_blank" rel="noopener">推箱子</a>。</p>
+          </div>
+
+<a id="more"></a>
+
+<p>代码中 <code>//</code> 是算法的注释，<code>// PS:</code> 是笔记。</p>
+<p>大致思路如下：</p>
+<ol>
+<li>从地图中找到人和箱子的位置，把地图恢复成单纯干净的地图；</li>
+<li>定义状态：人的位置 + 箱子的位置，还要有一个 set 来保证搜索空间不重复，已经出现过的状态不在添加；</li>
+<li>初始状态加入队列，然后每次从队列中弹出一个状态，从当前状态分别检测向上、下、左、右四个方向移动，是否会产生新状态，产生的新状态加入队列；直到箱子到达终点，或者队列为空；</li>
+<li>由于人的移动不计步数，只有箱子移动计步数，所以队列应当是一个优先级队列，箱子移动步数越少的状态，优先级越高，应该越早被弹出队列，新状态中箱子位置如果发生变动，则步数 +1；</li>
+<li>搜索人可以移动的状态，这个过程按照 BFS 搜索，如果人碰到了箱子，则箱子被推动，移动过程（即新状态）如果不合法，则这一状态不算数，不加入队列；不合法状态包括人撞墙、箱子撞墙、越界；</li>
+</ol>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> {</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">minPushBox</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid)</span> </span>{</span><br><span class="line">        <span class="comment">// 优先级队列，用于存储搜索状态，并且保证队列头的状态是最佳(优先级最高)的</span></span><br><span class="line">        priority_queue&lt;<span class="built_in">vector</span>&lt;<span class="keyword">size_t</span>&gt;,</span><br><span class="line">                       <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">size_t</span>&gt; &gt;,</span><br><span class="line">                       greater&lt;<span class="built_in">vector</span>&lt;<span class="keyword">size_t</span>&gt; &gt; &gt; pq;</span><br><span class="line">        <span class="comment">// PS: 优先级队列(插入元素后，队列会排序，队列头优先级最高)</span></span><br><span class="line">        <span class="comment">//     3个参数：</span></span><br><span class="line">        <span class="comment">//     a.数据类型T</span></span><br><span class="line">        <span class="comment">//     b.容器类型，一般是vector&lt;T&gt;</span></span><br><span class="line">        <span class="comment">//     c.比较函数，默认有greater&lt;T&gt;和less&lt;T&gt;两种</span></span><br><span class="line">        <span class="comment">//       greater&lt;T&gt;表示队列递增，队列头元素最小，也就是元素越小，优先级越高，即小顶堆</span></span><br><span class="line">        <span class="comment">//       less&lt;T&gt;表示队列递减，队列头元素最大，也就是元素越大，优先级越高，即大顶堆</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 地图大小</span></span><br><span class="line">        <span class="keyword">size_t</span> m = grid.size();</span><br><span class="line">        <span class="keyword">size_t</span> n = grid[<span class="number">0</span>].size();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 记录初始状态，并恢复地图</span></span><br><span class="line">        <span class="comment">// 这里vector长度为5，内容分别是：</span></span><br><span class="line">        <span class="comment">// [0]表示当前状态box移动步数</span></span><br><span class="line">        <span class="comment">// [1]-[2]表示当前状态人的位置x,y</span></span><br><span class="line">        <span class="comment">// [3]-[4]表示当前状态box的位置x,y</span></span><br><span class="line">        <span class="comment">// 最前面[0]表示box移动步数是因为，优先级队列中内容如果</span></span><br><span class="line">        <span class="comment">// 是pair，则从第一个元素开始比较，相等再比较第二个元素</span></span><br><span class="line">        <span class="comment">// ，步数放在最前面，保证目前box步数移动步数越少的状态，</span></span><br><span class="line">        <span class="comment">// 越靠近队列头，优先级最高</span></span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">size_t</span>&gt; <span class="title">a</span><span class="params">(<span class="number">5</span>, <span class="number">0</span>)</span></span>;  <span class="comment">// PS: 参数1表示初始化vector长度，参数2是初始值</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">size_t</span> x = <span class="number">0</span>; x &lt; m; x++) {</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">size_t</span> y = <span class="number">0</span>; y &lt; n; y++) {</span><br><span class="line">                <span class="keyword">if</span> (grid[x][y] == <span class="string">'S'</span>) {</span><br><span class="line">                    a[<span class="number">1</span>] = x;</span><br><span class="line">                    a[<span class="number">2</span>] = y;</span><br><span class="line">                    grid[x][y] = <span class="string">'.'</span>;</span><br><span class="line">                }</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (grid[x][y] == <span class="string">'B'</span>) {</span><br><span class="line">                    a[<span class="number">3</span>] = x;</span><br><span class="line">                    a[<span class="number">4</span>] = y;</span><br><span class="line">                    grid[x][y] = <span class="string">'.'</span>;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        pq.push(a);  <span class="comment">// PS: push进优先级队列后，队列会排序</span></span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        <span class="comment">// 存储搜索记录，避免重读搜索</span></span><br><span class="line">        <span class="built_in">set</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">size_t</span>&gt;&gt; dist;</span><br><span class="line">        <span class="comment">// PS: 集合set内元素唯一，可以快速查询是否存在</span></span><br><span class="line">        <span class="comment">//     某元素，可方便用于搜索空间的记录、重复元素的排查</span></span><br><span class="line">        dist.insert({ a[<span class="number">1</span>], a[<span class="number">2</span>], a[<span class="number">3</span>], a[<span class="number">4</span>] });</span><br><span class="line">        <span class="comment">// PS: 插入元素，如果元素已经存在于set，则不会插入成功，但是会报错吗?不会的</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 定义移动方向</span></span><br><span class="line">        <span class="keyword">int</span> dx[<span class="number">4</span>] = { <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span> };</span><br><span class="line">        <span class="keyword">int</span> dy[<span class="number">4</span>] = { <span class="number">1</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">0</span> };</span><br><span class="line">        <span class="comment">// PS: 这种定义方式好方便啊，只需要两个数组</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (!pq.empty()) {</span><br><span class="line">            <span class="comment">// 取出优先级队列中，队列头的元素，即优先级最高的，弹出队列头</span></span><br><span class="line">            <span class="keyword">auto</span> v = pq.top();</span><br><span class="line">            pq.pop();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 共四个搜索方向</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) {</span><br><span class="line">                <span class="comment">// 人移动后位置</span></span><br><span class="line">                <span class="built_in">vector</span>&lt;<span class="keyword">size_t</span>&gt; next_s = { v[<span class="number">1</span>] + dx[i], v[<span class="number">2</span>] + dy[i] };</span><br><span class="line">                <span class="comment">// PS: 这种思路值得借鉴，先算出下一个位置，但是不保存，然后依次验证是否合法</span></span><br><span class="line">                <span class="comment">//     合法就保存，不合法就跳出，无需回退，很方便</span></span><br><span class="line">                </span><br><span class="line">                <span class="comment">// 如果人移动后的位置不合法，则继续for循环，舍弃当前移动方向的计算</span></span><br><span class="line">                <span class="comment">// 不合法有两种：a.越界 b.撞墙</span></span><br><span class="line">                <span class="keyword">if</span> (next_s[<span class="number">0</span>] &gt;= m</span><br><span class="line">                || next_s[<span class="number">1</span>] &gt;= n</span><br><span class="line">                || grid[next_s[<span class="number">0</span>]][next_s[<span class="number">1</span>]] == <span class="string">'#'</span>)</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                <span class="comment">// PS: size_t非负，无需判断位置是否 &lt; 0，好经验</span></span><br><span class="line">                </span><br><span class="line">                <span class="comment">// 当前box的位置</span></span><br><span class="line">                <span class="built_in">vector</span>&lt;<span class="keyword">size_t</span>&gt; next_b = { v[<span class="number">3</span>], v[<span class="number">4</span>] };</span><br><span class="line">                <span class="keyword">size_t</span> d = v[<span class="number">0</span>];  <span class="comment">// 当前box的移动步数</span></span><br><span class="line">                <span class="comment">// 如果人移动后，和box重合了，那就移动box</span></span><br><span class="line">                <span class="keyword">if</span> (next_s == next_b) {</span><br><span class="line">                    next_b[<span class="number">0</span>] += dx[i];</span><br><span class="line">                    next_b[<span class="number">1</span>] += dy[i];</span><br><span class="line">                    <span class="comment">// 如果box移动后位置不合法，则继续for循环，舍弃当前移动方向的计算</span></span><br><span class="line">                    <span class="keyword">if</span> (next_b[<span class="number">0</span>] &gt;= m</span><br><span class="line">                    || next_b[<span class="number">1</span>] &gt;= n</span><br><span class="line">                    || grid[next_b[<span class="number">0</span>]][next_b[<span class="number">1</span>]] == <span class="string">'#'</span>)</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    <span class="comment">// 如果box移动后位置合法</span></span><br><span class="line">                    d++;  <span class="comment">// 步数+1</span></span><br><span class="line">                }</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// 不论box是否移动，经过前面的判断</span></span><br><span class="line">                <span class="comment">// 当前box的位置都是合理正确的了</span></span><br><span class="line">                <span class="comment">// 判断box是否到达了终点，是则直接返回结果</span></span><br><span class="line">                <span class="comment">// PS: 这是个好经验，依次用if条件判断，不满足就直接</span></span><br><span class="line">                <span class="comment">//     跳出(return, continue,break等)，满足的话，if</span></span><br><span class="line">                <span class="comment">//     不执行，直接开始后面的部分，这部分逻辑上本来是属于</span></span><br><span class="line">                <span class="comment">//     else部分的，但是由于if不满足会直接跳出，所以既然</span></span><br><span class="line">                <span class="comment">//     执行到了这一步，那也就是相当于else部分了，这也写</span></span><br><span class="line">                <span class="comment">//     可以避免过多if-else层级</span></span><br><span class="line">                <span class="keyword">if</span> (grid[next_b[<span class="number">0</span>]][next_b[<span class="number">1</span>]] == <span class="string">'T'</span>)</span><br><span class="line">                    <span class="keyword">return</span> (<span class="keyword">int</span>)d;</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// 如果没有到终点</span></span><br><span class="line">                <span class="comment">// 如果这一状态已经搜索过了，则继续for循环，舍弃当前移动方向的计算</span></span><br><span class="line">                <span class="comment">// PS: set的find函数可以快速查找set中是否</span></span><br><span class="line">                <span class="comment">//     存在某元素，返回元素的位置(迭代器)，如果</span></span><br><span class="line">                <span class="comment">//     返回的是end()，则说明一直找到了最后都没有</span></span><br><span class="line">                <span class="comment">//     找到，说明不存在该元素，如果返回的不是</span></span><br><span class="line">                <span class="comment">//     end()，说明找到了</span></span><br><span class="line">                <span class="keyword">if</span> (dist.find({ next_s[<span class="number">0</span>], next_s[<span class="number">1</span>],</span><br><span class="line">                next_b[<span class="number">0</span>], next_b[<span class="number">1</span>] }) != dist.end())</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// 如果这一状态没出现过，则记录这一状态，并加入优先级队列</span></span><br><span class="line">                dist.insert({ next_s[<span class="number">0</span>], next_s[<span class="number">1</span>], next_b[<span class="number">0</span>], next_b[<span class="number">1</span>] });</span><br><span class="line">                pq.push({ d, next_s[<span class="number">0</span>], next_s[<span class="number">1</span>], next_b[<span class="number">0</span>], next_b[<span class="number">1</span>] });</span><br><span class="line">                <span class="comment">// PS: 这种pair的形式，很方便，相当于一个vector&lt;T&gt;</span></span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	}</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+    </div>
+
+    
+    
+    
+
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/26/Cpp动态内存/" rel="bookmark">C++ - 动态内存</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/25/Cpp异常处理/" rel="bookmark">C++ - 异常处理</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/23/Cpp拷贝控制1：拷贝、赋值与销毁/" rel="bookmark">C++ - 拷贝控制 1：拷贝、赋值与销毁</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/26/Cpp智能指针/" rel="bookmark">C++ - 智能指针</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/25/Cpp虚函数/" rel="bookmark">C++ - 虚函数</a></div>
+    </li>
+  </ul>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+              <a href="/tags/LeetCode/" rel="tag"><i class="fa fa-tag"></i> LeetCode</a>
+              <a href="/tags/%E6%8E%A8%E7%AE%B1%E5%AD%90/" rel="tag"><i class="fa fa-tag"></i> 推箱子</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/26/Qt5_OpenGL_4_UI%E7%95%8C%E9%9D%A2%E7%BB%84%E4%BB%B6/" rel="prev" title="Qt UI 界面组件">
+      <i class="fa fa-chevron-left"></i> Qt UI 界面组件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/04/%E6%98%A5%E6%8B%9B%E7%AC%94%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86/" rel="next" title="2020 春招实习生笔面试问题整理">
+      2020 春招实习生笔面试问题整理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="諾司法拉圖"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">諾司法拉圖</p>
+  <div class="site-description" itemprop="description">一只想成为设计狮的程序猿。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">null </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">諾司法拉圖</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">55k</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://nuosferatu.cn/2020/04/20/%E9%A2%98%E8%A7%A3%EF%BC%9A%E6%8E%A8%E7%AE%B1%E5%AD%90/',]
+      });
+      });
+  </script>
+
+
+  
+
+
+
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+</body>
+</html>
