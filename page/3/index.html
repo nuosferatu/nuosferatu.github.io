@@ -115,7 +115,7 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
@@ -347,7 +347,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/06/01/Markdown%E8%AF%AD%E6%B3%95%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">Markdown（含Hexo、NexT扩展）语法测试</a>
+            <a href="/2019/06/01/Markdown%E8%AF%AD%E6%B3%95%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">Markdown（含主题扩展）语法测试</a>
         </h2>
 
         <div class="post-meta">
@@ -375,7 +375,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>921</span>
             </span>
 
         </div>
@@ -535,7 +535,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>949</span>
+              <span>996</span>
             </span>
 
         </div>
@@ -547,52 +547,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-
-<p>安装驱动：</p>
-<ol>
-<li>查看自己的电脑是否支持 TensonFlow GPU 版本，CUDA 计算能力为 3.5 或更高的 NVIDIA GPU 卡即可，从这里查看<a href="https://developer.nvidia.com/cuda-gpus" target="_blank" rel="noopener">支持 CUDA 的 GPU 卡</a>，当然这个网站显示的并不全，比如我的笔记本显卡是 GeForce GTX 1050 Notebook，网站上并没有更新，但实际上是支持的。</li>
-<li>安装 <a href="https://www.nvidia.com/drivers" target="_blank" rel="noopener">NVIDIA GPU 驱动程序</a></li>
-<li>安装 <a href="https://developer.nvidia.com/cuda-zone" target="_blank" rel="noopener">CUDA 工具包</a></li>
-<li>配置环境变量，将 CUDA 的安装目录添加到 Path 中。</li>
-</ol>
-<p>新建一个 Anaconda 环境，使用 Python 3.5：</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n tensorflow-gpu python=3.5</span><br></pre></td></tr></tbody></table></figure>
-
-<p>激活该环境：</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">activate tensorflow-gpu</span><br></pre></td></tr></tbody></table></figure>
-
-<p>安装 TensorFlow GPU 版本：</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --upgrade tensorflow-gpu</span><br></pre></td></tr></tbody></table></figure>
-
-<p>安装 CUDA 和 cnDNN：</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda install -c anaconda cudatoolkit</span><br><span class="line">conda install -c anaconda cudnn</span><br></pre></td></tr></tbody></table></figure>
-
-<p>安装 ipykernel：</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install ipykernel</span><br></pre></td></tr></tbody></table></figure>
-
-<p>配置 Jupyter Notebook 内核：</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m ipykernel install --name tensorflow-gpu --display-name <span class="string">"TensorFlow GPU (python3.5)"</span></span><br></pre></td></tr></tbody></table></figure>
-
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+          <div class="note default">
+            <p>Windows 10 通过 Anaconda 安装 TensorFlow GPU 版本的教程，包括 CUDA。</p>
+          </div>
+          <!--noindex-->
+          <!--/noindex-->
+        
       
     </div>
 
@@ -687,7 +647,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -732,7 +692,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">55k</span>
+    <span title="站点总字数">56k</span>
 </div>
 
         

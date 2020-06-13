@@ -18,15 +18,15 @@
     var CONFIG = {"hostname":"nuosferatu.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="帧缓存（framebuffer）包含：颜色缓冲深度缓冲模板缓冲">
+  <meta name="description" content="这个系列是我学习 OpenGL 过程中记录的笔记，本节主要是帧缓冲及其应用，教程原文看这里。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenGL - 帧缓冲">
 <meta property="og:url" content="http://nuosferatu.cn/2020/05/18/OpenGL%E5%B8%A7%E7%BC%93%E5%86%B2/index.html">
 <meta property="og:site_name" content="Nuosferatu&#39;s Blog">
-<meta property="og:description" content="帧缓存（framebuffer）包含：颜色缓冲深度缓冲模板缓冲">
+<meta property="og:description" content="这个系列是我学习 OpenGL 过程中记录的笔记，本节主要是帧缓冲及其应用，教程原文看这里。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-13T03:25:04.500Z">
+<meta property="article:modified_time" content="2020-06-13T05:55:57.372Z">
 <meta property="article:author" content="諾司法拉圖">
 <meta property="article:tag" content="OpenGL">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
@@ -235,11 +235,17 @@
 
       
         <div class="note default">
-            <p>帧缓存（framebuffer）包含：</p><ul><li>颜色缓冲</li><li>深度缓冲</li><li>模板缓冲</li></ul>
+            <p>这个系列是我学习 OpenGL 过程中记录的笔记，本节主要是帧缓冲及其应用，教程原文看<a href="https://learnopengl-cn.github.io/04%20Advanced%20OpenGL/05%20Framebuffers/" target="_blank" rel="noopener">这里</a>。</p>
           </div>
 
 <a id="more"></a>
 
+<p>帧缓存（framebuffer）包含：</p>
+<ul>
+<li>颜色缓冲</li>
+<li>深度缓冲</li>
+<li>模板缓冲</li>
+</ul>
 <p>这也是我们默认使用的<strong>默认帧缓冲</strong>，由 GLFW 自动创建。</p>
 <h1 id="创建帧缓冲"><a href="#创建帧缓冲" class="headerlink" title="创建帧缓冲"></a>创建帧缓冲</h1><h2 id="创建帧缓冲-1"><a href="#创建帧缓冲-1" class="headerlink" title="创建帧缓冲"></a>创建帧缓冲</h2><p>和 VAO、VBO 一样，帧缓冲的创建方法如下：</p>
 <figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> fbo;</span><br><span class="line">glGenFramebuffers(<span class="number">1</span>, &amp;fbo);</span><br></pre></td></tr></tbody></table></figure>
@@ -453,7 +459,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -498,7 +504,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">55k</span>
+    <span title="站点总字数">56k</span>
 </div>
 
         
