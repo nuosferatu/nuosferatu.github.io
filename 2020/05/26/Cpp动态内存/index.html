@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.0"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>C++ - 动态内存 - 諾司法拉圖&#039;s Blog</title><meta description="new 分配内存，delete 释放 new 分配的内存。"><meta property="og:type" content="blog"><meta property="og:title" content="C++ - 动态内存"><meta property="og:url" content="http://nuosferatu.github.io/2020/05/26/Cpp%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/"><meta property="og:site_name" content="諾司法拉圖&#039;s Blog"><meta property="og:description" content="new 分配内存，delete 释放 new 分配的内存。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://nuosferatu.github.io/img/og_image.png"><meta property="article:published_time" content="2020-05-25T16:00:00.000Z"><meta property="article:modified_time" content="2020-06-19T03:32:24.804Z"><meta property="article:author" content="諾司法拉圖"><meta property="article:tag" content="C++"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://nuosferatu.github.io/2020/05/26/Cpp%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/"},"headline":"諾司法拉圖's Blog","image":["http://nuosferatu.github.io/img/og_image.png"],"datePublished":"2020-05-25T16:00:00.000Z","dateModified":"2020-06-19T03:32:24.804Z","author":{"@type":"Person","name":"諾司法拉圖"},"description":"new 分配内存，delete 释放 new 分配的内存。"}</script><link rel="canonical" href="http://nuosferatu.github.io/2020/05/26/Cpp%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/unicorn_nuosferatu_new.png" alt="諾司法拉圖&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/"> 主 页 </a><a class="navbar-item" href="/archives"> 归 档 </a><a class="navbar-item" href="/categories"> 分 类 </a><a class="navbar-item" href="/tags"> 标 签 </a><a class="navbar-item" href="/movies"> 电 影 </a><a class="navbar-item" href="/books"> 图 书 </a><a class="navbar-item" href="/about"> 关于我 </a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section" style="padding-top:1.8em!important;"><div class="container"><div class="columns"><div class="column order-2 column-main is-9-tablet is-9-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-05-25T16:00:00.000Z" title="2020-05-25T16:00:00.000Z">2020-05-26</time><span class="level-item"><a class="link-muted" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><span> / </span><a class="link-muted" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/C/">C++</a></span></div></div><h1 class="title is-3 is-size-4-mobile">C++ - 动态内存</h1><div class="content"><p>new 分配内存，delete 释放 new 分配的内存。</p>
+<a id="more"></a>
+
+<h1 id="new"><a href="#new" class="headerlink" title="new"></a>new</h1><p><strong>初始化</strong></p>
+<p>使用 new 在堆（heap）中分配内存是无名的，会返回一个指向该对象的指针，所有要用一个指针接着。</p>
+<p>初始化方式：</p>
+<ul>
+<li>默认初始化，什么也不写</li>
+<li>直接初始化，传统的圆括号，或者列表初始化（C++11）</li>
+<li>值初始化，后跟一对空括号</li>
+</ul>
+<blockquote>
+<p>值初始化和默认初始化的区别主要在内置变量，值初始化是后跟一对空括号，int 会初始化为 0，默认初始化什么也不写，int 未定义；对于类类型来说，都是调用默认构造函数，没区别。</p>
+</blockquote>
+<p><strong>auto</strong></p>
+<p>直接初始化中，圆括号内是初始化器，当只有单一初始化器时，可以使用 auto 推断类型（后面会讲到动态数组不能用 auto，因为只有单一初始化器才可以使用 auto 推断类型，而动态数组不允许使用初始化器），如：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p1 = <span class="keyword">new</span> <span class="keyword">auto</span>(obj);</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>const</strong></p>
+<p>用 new 分配一个 const 对象（当然是指底层 const）：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *pi = <span class="keyword">new</span> <span class="keyword">const</span> <span class="keyword">int</span>(<span class="number">1024</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">string</span> *ps = <span class="keyword">new</span> <span class="keyword">const</span> <span class="built_in">string</span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>内存耗尽</strong></p>
+<p>new 分配失败，抛出 bad_alloc 异常，如果将 nothrow 传入<strong>定位 new</strong>，则返回一个空指针。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> (nothrow) <span class="keyword">int</span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h1><p>delete 销毁 new 分配的对象，释放内存。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1024</span>);</span><br><span class="line"><span class="keyword">delete</span> p;</span><br><span class="line">p = <span class="literal">nullptr</span>; <span class="comment">// 避免空悬指针</span></span><br><span class="line"><span class="comment">// 但是作用有限，如果还有别的指针指向它</span></span><br><span class="line"><span class="comment">// 毕竟不是智能指针</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="动态数组"><a href="#动态数组" class="headerlink" title="动态数组"></a>动态数组</h1><p>分配一个动态数组，实际是返回第一个元素的指针，并不真的是数组：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br></pre></td></tr></tbody></table></figure>
+
+<p>也可以 typedef 先定义好动态数组的形式：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">42</span>]; <span class="comment">// arrT 相当于 int[42]</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> arrT;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>初始化，默认是默认初始化，可以加空括号执行值初始化，但是不能给初始化器，所以自然也不能用 auto：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]; <span class="comment">// 默认初始化，10 个未定义</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>](); <span class="comment">// 值初始化，10 个 0</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>也可以用初始值列表 <code>{ }</code> 执行初始化，不足的位数进行值初始化，多余了位数，new 失败，抛出 bad_array_new_length 异常。</p>
+<p>有趣的是，分配一个长度为 0 的动态数组合法（而静态数组不允许长度为 0），可以执行指针比较、加减操作，但是不能解引用。</p>
+<p>释放：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span>[] p; <span class="comment">// 如果忘记了方括号，行为未定义，编译器不报错</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="new-与智能指针"><a href="#new-与智能指针" class="headerlink" title="new 与智能指针"></a>new 与智能指针</h1><p>使用 new 来初始化智能指针：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>智能指针构造函数是 explicit 的，不允许隐式转换，必须使用直接初始化，即使是返回值也得直接初始化。</p>
+<h1 id="动态数组与智能指针"><a href="#动态数组与智能指针" class="headerlink" title="动态数组与智能指针"></a>动态数组与智能指针</h1><p>动态数组与智能指针：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unique_ptr&lt;int[]&gt; up(new int[10]);</span><br><span class="line">up.<span class="built_in">release</span>(); <span class="comment">// 自动调用 delete[] 销毁其指针</span></span><br><span class="line">up[<span class="number">1</span>] = <span class="number">2</span>; <span class="comment">// 可以用 []，不能用点和箭头，毕竟是数组</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>shared_ptr 使用 delete 销毁对象，因此不能直接支持管理动态数组，需要自定义一个删除器 delete[]，否则未定义，也不能用 <code>[ ]</code>，只能用 get 函数获取一个内置指针，通过偏移来访问数组。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">sp</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>], [](<span class="keyword">int</span> *p) { <span class="keyword">delete</span>[] p; })</span></span>;</span><br><span class="line">sp.reset(); <span class="comment">// 使用 deletep[] 释放数组</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i != <span class="number">10</span>; ++i)</span><br><span class="line">    *(sp.<span class="built_in">get</span>() + i) = i; <span class="comment">// 不能用 []，只能用内置指针偏移访问数组</span></span><br></pre></td></tr></tbody></table></figure>
+
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script></div><div class="article-tags size-small mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/C/">C++</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/06/10/%E7%AC%94%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86%EF%BC%9A%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">笔面试问题整理：排序和查找</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/05/26/Cpp%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/"><span class="level-item">C++ - 智能指针</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-3-tablet is-3-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/avatar.png" alt="諾司法拉圖"></figure><p class="title is-size-4 is-block line-height-inherit" style="margin-bottom:1em!important;">諾司法拉圖</p><p class="is-size-6 is-block">一只想成为设计狮的程序猿。</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>中国-西安</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">26</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">8</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">23</p></a></div></div></nav></div></div><div class="card widget" id="toc"><div class="card-content" style="max-height: 480px; overflow-y: auto; overflow-x: hidden;"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#new"><span>new</span></a></li><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#delete"><span>delete</span></a></li><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#动态数组"><span>动态数组</span></a></li><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#new-与智能指针"><span>new 与智能指针</span></a></li><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#动态数组与智能指针"><span>动态数组与智能指针</span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/unicorn_nuosferatu_new.png" alt="諾司法拉圖&#039;s Blog" height="28"></a><p class="size-small"><span>&copy; 2020 諾司法拉圖</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            site: {
+                url: 'http://nuosferatu.github.io',
+                external_link: {"enable":true,"exclude":[]}
+            },
+            article: {
+                highlight: {
+                    clipboard: false,
+                    fold: ''
+                }
+            }
+        };</script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

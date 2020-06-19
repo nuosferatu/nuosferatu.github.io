@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.0"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>C++ - 拷贝控制 1：拷贝、赋值与销毁 - 諾司法拉圖&#039;s Blog</title><meta description="拷贝控制操作有：拷贝构造函数、移动构造函数、拷贝赋值运算符、移动赋值运算符、析构函数。"><meta property="og:type" content="blog"><meta property="og:title" content="C++ - 拷贝控制 1：拷贝、赋值与销毁"><meta property="og:url" content="http://nuosferatu.github.io/2020/05/23/Cpp%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B61%EF%BC%9A%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%94%80%E6%AF%81/"><meta property="og:site_name" content="諾司法拉圖&#039;s Blog"><meta property="og:description" content="拷贝控制操作有：拷贝构造函数、移动构造函数、拷贝赋值运算符、移动赋值运算符、析构函数。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://nuosferatu.github.io/img/og_image.png"><meta property="article:published_time" content="2020-05-22T16:00:00.000Z"><meta property="article:modified_time" content="2020-06-19T03:32:37.607Z"><meta property="article:author" content="諾司法拉圖"><meta property="article:tag" content="C++"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://nuosferatu.github.io/2020/05/23/Cpp%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B61%EF%BC%9A%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%94%80%E6%AF%81/"},"headline":"諾司法拉圖's Blog","image":["http://nuosferatu.github.io/img/og_image.png"],"datePublished":"2020-05-22T16:00:00.000Z","dateModified":"2020-06-19T03:32:37.607Z","author":{"@type":"Person","name":"諾司法拉圖"},"description":"拷贝控制操作有：拷贝构造函数、移动构造函数、拷贝赋值运算符、移动赋值运算符、析构函数。"}</script><link rel="canonical" href="http://nuosferatu.github.io/2020/05/23/Cpp%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B61%EF%BC%9A%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%94%80%E6%AF%81/"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/unicorn_nuosferatu_new.png" alt="諾司法拉圖&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/"> 主 页 </a><a class="navbar-item" href="/archives"> 归 档 </a><a class="navbar-item" href="/categories"> 分 类 </a><a class="navbar-item" href="/tags"> 标 签 </a><a class="navbar-item" href="/movies"> 电 影 </a><a class="navbar-item" href="/books"> 图 书 </a><a class="navbar-item" href="/about"> 关于我 </a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section" style="padding-top:1.8em!important;"><div class="container"><div class="columns"><div class="column order-2 column-main is-9-tablet is-9-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-05-22T16:00:00.000Z" title="2020-05-22T16:00:00.000Z">2020-05-23</time><span class="level-item"><a class="link-muted" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><span> / </span><a class="link-muted" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/C/">C++</a></span></div></div><h1 class="title is-3 is-size-4-mobile">C++ - 拷贝控制 1：拷贝、赋值与销毁</h1><div class="content"><p>拷贝控制操作有：拷贝构造函数、移动构造函数、拷贝赋值运算符、移动赋值运算符、析构函数。</p>
+<a id="more"></a>
+
+<p>拷贝控制操作有：</p>
+<ul>
+<li>拷贝构造函数（初始化时）</li>
+<li>移动构造函数（初始化时）</li>
+<li>拷贝赋值运算符（赋值时）</li>
+<li>移动赋值运算符（赋值时）</li>
+<li>析构函数（销毁时）</li>
+</ul>
+<h1 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h1><p>第一个参数是自身类型的引用，如有其余参数，则都有默认值。</p>
+<p>拷贝构造函数在以下几种情况会被隐式地调用：</p>
+<ul>
+<li>用一个类对象去定义一个新对象，且发生拷贝初始化（区别于函数匹配）</li>
+<li>类对象作为实参去和形参结合时</li>
+<li>返回一个非引用类对象时</li>
+</ul>
+<p>因此通常不应该声明成 explicit 的。</p>
+<p>编译器会自动生成一个默认的拷贝构造函数。默认拷贝构造函数依次拷贝每个非 static 成员，拷贝方式是拷贝构造函数（类类型）或直接拷贝（内置类型），数组逐元素拷贝，拷贝方式看元素类型。</p>
+<h2 id="拷贝初始化"><a href="#拷贝初始化" class="headerlink" title="拷贝初始化"></a>拷贝初始化</h2><p>通过函数匹配选择合适的构造函数来初始化对象，是直接初始化；通过调用拷贝构造函数（或移动构造函数）来初始化对象，则是拷贝初始化。</p>
+<p>拷贝初始化发生的情况：</p>
+<ul>
+<li>用等号 <code>=</code> 定义一个新变量时</li>
+<li>非引用对象作为实参传递时</li>
+<li>返回一个非引用对象时</li>
+<li>花括号 <code>{}</code> 初始化数组的元素或聚合类的成员</li>
+</ul>
+<p>STL 库中，insert 和 push 操作是拷贝初始化，emplace 则是直接初始化。</p>
+<p>实参传递不能隐式地使用一个 explicit 的构造函数来做类型转换，如果一定要用，就得显示地使用它，比如 vector 的单参数的构造函数是 explicit 的，因此：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;)</span></span>;</span><br><span class="line">f(<span class="number">10</span>);  <span class="comment">// 错误</span></span><br><span class="line">f(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(<span class="number">10</span>));  <span class="comment">// 正确</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>)</span></span>;  <span class="comment">// 正确，直接初始化</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2 = <span class="number">10</span>;  <span class="comment">// 错误，不接受隐式调用构造函数</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>编译器可能会把拷贝初始化改写为直接初始化的形式，但前提是拷贝/移动构造函数还是必须存在，且可访问。</p>
+<h1 id="拷贝赋值运算符"><a href="#拷贝赋值运算符" class="headerlink" title="拷贝赋值运算符"></a>拷贝赋值运算符</h1><p>使用等号 <code>=</code> 为一个对象赋值时，调用拷贝赋值运算符，如果没有，编译器会合成一个默认的，将右侧非 static 成员逐个赋值给左边，通过成员的赋值运算符，数组则是逐元素赋值。</p>
+<p>特点：</p>
+<ul>
+<li>是成员函数</li>
+<li>返回一个左侧对象引用 <code>*this</code></li>
+<li>左侧默认绑定 <code>*this</code>，右侧显式传递。</li>
+</ul>
+<p>默认拷贝赋值运算符可以禁用，方法有：</p>
+<ul>
+<li>= delete，定义删除的函数（C++11）</li>
+<li>private，私有，用户无法访问</li>
+</ul>
+<h1 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h1><p>释放对象在生存期分配的资源（函数体，可能为空），销毁非 static 成员（析构部分，隐式的），按成员初始化顺序的逆序销毁，类类型成员调用自己的析构函数，内置类型什么也不做，智能指针成员会销毁，即计数减 1）</p>
+<p>析构函数无返回值，不接受参数（因此不可重载，唯一）。</p>
+<p>什么时候会调用析构函数：</p>
+<ul>
+<li>变量离开作用域（除引用和指针）</li>
+<li>对象被销毁，成员也被销毁</li>
+<li>容器被销毁，元素也被销毁</li>
+<li>delete 动态分配的对象</li>
+<li>临时变量，创建它的表达式结束时</li>
+</ul>
+<p>不定义，编译器会自动合成一个默认析构函数。</p>
+<h1 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h1><p>将拷贝控制成员定义为 = default，是显示要求编译器生成合成版本（默认版本）的拷贝控制函数或构造函数。类内写 = default 是内联，类外写则不是内联。</p>
+<p>= delete 可以定义删除的函数，任何函数都可以，必须在第一次声明时定义。常用于禁止拷贝，也可用于引导函数匹配过程。（注：析构函数不可以删除。如果删除了，就不能定义对象，包含无析构函数成员的类，也不能定义对象。不过可以用指针动态分配，但是就不能释放了。即：不能定义该类型变量，或释放由该类型动态分配的对象的指针。）</p>
+<p>以下情况，编译器不会定义合成的拷贝控制函数（或者说定义删除的）：</p>
+<ul>
+<li>如果类的某个成员析构函数是删除的或不可访问的（如 private），则会删除析构函数和拷贝构造函数。</li>
+<li>如果某个成员拷贝构造函数是删除的或不可访问的，则会删除拷贝构造函数。</li>
+<li>如果某个成员拷贝运算符是删除的或不可访问的，或类里有 const 成员（因为 const 是不能赋值的），或类内有引用成员（引用不能被改变，改变的是引用指向的对象的值），则会删除拷贝运算符。</li>
+<li>如果某个成员析构函数是删除的或不可访问的，或有 const 成员没有类内初始化器，且其类型没有显示定义默认构造函数，或有引用成员没有类内初始化器，则会删除默认构造函数。</li>
+</ul>
+<p>即：如果一个类有数据成员不能默认构造、拷贝、复制或销毁，则对应的成员函数将被定义为删除的。</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script></div><div class="article-tags size-small mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/C/">C++</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/05/25/Cpp%E8%99%9A%E5%87%BD%E6%95%B0/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">C++ - 虚函数</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/05/18/OpenGL%E5%B8%A7%E7%BC%93%E5%86%B2/"><span class="level-item">OpenGL - 帧缓冲</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-3-tablet is-3-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/avatar.png" alt="諾司法拉圖"></figure><p class="title is-size-4 is-block line-height-inherit" style="margin-bottom:1em!important;">諾司法拉圖</p><p class="is-size-6 is-block">一只想成为设计狮的程序猿。</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>中国-西安</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">26</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">8</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">23</p></a></div></div></nav></div></div><div class="card widget" id="toc"><div class="card-content" style="max-height: 480px; overflow-y: auto; overflow-x: hidden;"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#拷贝构造函数"><span>拷贝构造函数</span></a><ul class="menu-list"><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#拷贝初始化"><span>拷贝初始化</span></a></li></ul></li><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#拷贝赋值运算符"><span>拷贝赋值运算符</span></a></li><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#析构函数"><span>析构函数</span></a></li><li><a class="is-flex" style="padding-top:4px!important;padding-bottom:4px!important;" href="#更多"><span>更多</span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/unicorn_nuosferatu_new.png" alt="諾司法拉圖&#039;s Blog" height="28"></a><p class="size-small"><span>&copy; 2020 諾司法拉圖</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            site: {
+                url: 'http://nuosferatu.github.io',
+                external_link: {"enable":true,"exclude":[]}
+            },
+            article: {
+                highlight: {
+                    clipboard: false,
+                    fold: ''
+                }
+            }
+        };</script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
