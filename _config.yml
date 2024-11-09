@@ -18,7 +18,7 @@ timezone: Asia/Shanghai
 title: NUOSFERATU # the main title
 
 # 标语（或 slogan，出现在 logo 下面，即副标题）
-tagline: TBD # it will display as the subtitle
+tagline: "Tagline: TBD" # it will display as the subtitle
 
 # 网站描述（用于网站搜索引擎优化）
 description: >- # used by seo meta and the atom feed

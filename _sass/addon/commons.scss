@@ -722,9 +722,10 @@ $btn-mb: 0.5rem;
     img {
       transition: transform 0.5s;
 
-      &:hover {
-        transform: scale(1.2);
-      }
+      // 不想让头像放大，好中二
+      // &:hover {
+      //   transform: scale(1.2);
+      // }
     }
   }
 
