@@ -1,10 +1,10 @@
 ---
 # the default layout is 'page'
 # icon: fas fa-info-circle
-order: 5
+order: 4
 ---
 
-> 个人博客，记录一些有的没的。
+> 我喜欢的一些电影、剧集、动漫、书籍等。
 {: .prompt-tip }
 
 TBD
