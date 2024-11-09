@@ -26,7 +26,7 @@ description: >- # used by seo meta and the atom feed
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
-url: ""
+url: "https://nuosferatu.github.io"
 
 github:
   username: nuosferatu # change to your GitHub username
@@ -40,6 +40,7 @@ social:
   name: nuosferatu
   email: nuosferatu@163.com # change to your email address
   links:
+    # 必须留一个，要不然就出问题了
     # The first element serves as the copyright owner's link
     # - https://twitter.com/username # change to your Twitter homepage
     - https://github.com/nuosferatu # change to your GitHub homepage
@@ -100,7 +101,7 @@ theme_mode: # [light | dark]
 # e.g. 'https://cdn.com'
 cdn:
 
-# 个人头像（显示在网页标签和边栏标题副标题
+# 个人头像（显示在边栏标题副标题上面）
 # the avatar on sidebar, support local or CORS resources
 avatar: "https://nuosferatu-note-image.oss-cn-beijing.aliyuncs.com/img/202411082227291.png"
 
